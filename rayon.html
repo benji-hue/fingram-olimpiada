@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Финграм: районный этап</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: одна узкая колонка, как лист олимпиадного бланка; сверху вкладки, карточка вопроса — главный объект */
+:root {
+  --bg: #f3f6f4; --paper: #ffffff; --ink: #14251f; --muted: #5a6b64; --line: #d5ded9;
+  --accent: #1f6b52; --accent-soft: #e1efe8; --gold: #9a6b12;
+  --ok: #1d7a43; --ok-soft: #e2f3e8; --bad: #b3362b; --bad-soft: #f9e4e1;
+  --f-display: "Unbounded", "Golos Text", system-ui, sans-serif;
+  --f-body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1714; --paper: #16221d; --ink: #e4ede8; --muted: #93a69d; --line: #2a3a33;
+  --accent: #5fc39b; --accent-soft: #1d3329; --gold: #e0b45a;
+  --ok: #5fcf8a; --ok-soft: #173325; --bad: #f08074; --bad-soft: #3a1c19; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f1714; --paper: #16221d; --ink: #e4ede8; --muted: #93a69d; --line: #2a3a33;
+  --accent: #5fc39b; --accent-soft: #1d3329; --gold: #e0b45a;
+  --ok: #5fcf8a; --ok-soft: #173325; --bad: #f08074; --bad-soft: #3a1c19; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 16px/1.5 var(--f-body); }
+.wrap { max-width: 720px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 56px; display: grid; gap: 20px }
+header { display: grid; gap: 8px }
+h1 { font: 700 clamp(22px, 5vw, 30px)/1.15 var(--f-display); margin: 0; text-wrap: balance; letter-spacing: -0.01em }
+.lead { margin: 0; color: var(--muted); max-width: 62ch }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 0; padding: 0; list-style: none }
+.facts li { font: 500 13px/1 var(--f-mono); padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper) }
+.facts b { color: var(--accent) }
+nav { display: flex; gap: 4px; border-bottom: 1px solid var(--line); overflow-x: auto }
+nav button { font: 600 15px var(--f-body); color: var(--muted); background: none; border: 0; padding: 10px 12px; border-bottom: 3px solid transparent; cursor: pointer; white-space: nowrap }
+nav button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent) }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.panel { display: grid; gap: 16px }
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; gap: 14px; min-width: 0 }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between }
+.btn { font: 600 15px var(--f-body); padding: 11px 18px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent); color: var(--paper); cursor: pointer }
+.btn.ghost { background: transparent; color: var(--accent) }
+.btn:disabled { opacity: .45; cursor: default }
+.meta { font: 500 13px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums }
+.tag { font: 600 12px var(--f-body); letter-spacing: .04em; text-transform: uppercase; color: var(--gold) }
+.qtext { font-size: 18px; font-weight: 500; margin: 0; text-wrap: pretty }
+.opts { display: grid; gap: 8px }
+.opt { text-align: left; font: 16px/1.4 var(--f-body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; cursor: pointer; display: flex; gap: 12px }
+.opt .n { font: 500 14px var(--f-mono); color: var(--muted); padding-top: 1px }
+.opt:hover:not(:disabled) { border-color: var(--accent) }
+.opt.sel { border-color: var(--accent); background: var(--accent-soft) }
+.opt.ok { border-color: var(--ok); background: var(--ok-soft) }
+.opt.bad { border-color: var(--bad); background: var(--bad-soft) }
+.opt:disabled { cursor: default }
+.expl { border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; color: var(--ink); margin: 0 }
+.expl b { display: block; font-size: 14px; margin-bottom: 2px }
+.expl.ok b { color: var(--ok) } .expl.bad b { color: var(--bad) }
+.bar { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden }
+.bar i { display: block; height: 100%; background: var(--accent); transition: width .3s }
+.timer { font: 500 20px var(--f-mono); font-variant-numeric: tabular-nums }
+.timer.low { color: var(--bad) }
+.chips { display: flex; flex-wrap: wrap; gap: 8px }
+.chip { font: 500 14px var(--f-body); padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); cursor: pointer }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--paper) }
+.score { font: 700 44px/1 var(--f-display); color: var(--accent) }
+.review { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none }
+.review li { border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: grid; gap: 4px; font-size: 15px }
+.review .st { font: 600 13px var(--f-body) } .review .st.ok { color: var(--ok) } .review .st.bad { color: var(--bad) }
+.sheet h2 { font: 700 17px var(--f-display); margin: 0 }
+.sheet h3 { font: 600 16px var(--f-body); margin: 6px 0 0 }
+.sheet ul { margin: 0; padding-left: 20px; display: grid; gap: 4px }
+.formula { font: 500 14px/1.6 var(--f-mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px; overflow-x: auto; white-space: pre }
+a { color: var(--accent) }
+.links { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none }
+.links li { display: grid; gap: 2px }
+.links span { color: var(--muted); font-size: 14px }
+.note { font-size: 14px; color: var(--muted); margin: 0 }
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a href="./" style="font-size:14px">← Все тренажёры</a>
+    <span class="tag">Олимпиада по финансовой грамотности · II этап · 16 октября 2026</span>
+    <h1>Тренажёр к районному этапу</h1>
+    <p class="lead">Пробный вариант в формате олимпиады Нацбанка, задачи по темам и шпаргалка с формулами. Вопросы составлены по методическим рекомендациям НБРБ 2026 года; это тренировка, а не реальные задания.</p>
+    <ul class="facts">
+      <li><b>30</b> вопросов</li><li><b>1</b> из 3 ответов</li><li><b>60</b> минут</li><li>до <b>100</b> баллов</li><li>без калькулятора</li>
+    </ul>
+  </header>
+
+  <nav role="tablist">
+    <button role="tab" id="tab-exam" aria-selected="true" data-tab="exam">Пробный вариант</button>
+    <button role="tab" id="tab-topics" aria-selected="false" data-tab="topics">По темам</button>
+    <button role="tab" id="tab-sheet" aria-selected="false" data-tab="sheet">Шпаргалка</button>
+    <button role="tab" id="tab-links" aria-selected="false" data-tab="links">Задания прошлых лет</button>
+  </nav>
+
+  <section class="panel" id="p-exam"></section>
+  <section class="panel" id="p-topics" hidden></section>
+  <section class="panel sheet" id="p-sheet" hidden>
+    <div class="card">
+      <h2>Формулы</h2>
+      <p class="note">В задачах олимпиады в месяце 30 дней, в году 360.</p>
+<div class="formula">Простые проценты:     доход = сумма × ставка × дни / 36000
+Месяц по вкладу:      доход = сумма × ставка × 30 / 36000 = сумма × ставка / 1200
+Капитализация:        начислил за период → прибавил → следующий период от новой суммы
+Дифф. платёж:         долг / число месяцев + остаток долга × ставка / 1200
+Изменение в %:        (новое − старое) / старое × 100
++a% и потом −a%:      итог ниже исходного на a² / 100 %   (±20% → −4%)
+Сумма для дохода D:   вклад = D × 1200 / ставка   (в месяц)</div>
+      <h3>Как решать без калькулятора</h3>
+      <ul>
+        <li>Сначала прикинь порядок ответа: один из трёх вариантов часто отличается в разы.</li>
+        <li>16% годовых за 90 дней — это 4% от суммы (четверть года). 12% годовых — 1% в месяц.</li>
+        <li>Текстовые задачи на бюджет: выпиши все расходы столбиком, сложи, вычти из дохода.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Ключевые факты по темам</h2>
+      <h3>Личные финансы и деньги</h3>
+      <ul>
+        <li>Финансовый резерв — минимум 3 месяца обязательных расходов.</li>
+        <li>Переменные доходы — нерегулярные: премии, продажа урожая, подработка летом.</li>
+        <li>Банкноты: 5, 10, 20, 50, 100, 200, 500 руб. Монеты: 1, 2, 5, 10, 20, 50 коп., 1 и 2 руб.</li>
+        <li>100 руб. — Несвижский замок, 20 руб. — дворец Румянцевых и Паскевичей в Гомеле, 10 руб. — Полоцк.</li>
+        <li>Аверс — лицевая сторона монеты, реверс — оборотная, гурт — ребро.</li>
+        <li>Защита банкнот: водяной знак, защитная нить, микротекст, элемент MASK, антикопировальная сетка.</li>
+        <li>Нацбанк ведёт монетарное таргетирование: поддерживает стабильность цен, регулируя количество денег в экономике.</li>
+      </ul>
+      <h3>Вклады</h3>
+      <ul>
+        <li>Самостоятельно открыть вклад можно с 14 лет.</li>
+        <li>Отзывный — забрать досрочно по требованию; безотзывный — только с согласия банка.</li>
+        <li>Государство гарантирует возврат вкладов в банках полностью; выплачивает Агентство по гарантированному возмещению банковских вкладов. Выплата — в валюте вклада или по желанию в рублях.</li>
+        <li>Не возмещаются: металлические счета, электронные деньги, деньги в микрофинансовых организациях.</li>
+      </ul>
+      <h3>Кредиты</h3>
+      <ul>
+        <li>Дифференцированная схема: первый платёж самый большой, общая переплата меньше. Аннуитет: равные платежи, переплата больше.</li>
+        <li>Кредитный отчёт получает сам человек или представитель по нотариальной доверенности.</li>
+        <li>В кредитную историю попадают кредиты, лизинг, микрозаймы, рассрочки.</li>
+        <li>Поручитель отвечает в том же объёме, что и заёмщик.</li>
+        <li>Реструктуризация — изменение условий кредита. Лизинг: вещь принадлежит лизингодателю до полной выплаты.</li>
+        <li>Информацию о долге по потребкредиту и микрозайму можно получать бесплатно не реже раза в месяц.</li>
+      </ul>
+      <h3>Цифровой банкинг и кибербезопасность</h3>
+      <ul>
+        <li>Эмитент выпускает карточку, эквайер обслуживает магазин.</li>
+        <li>Базовый счёт — один, только в рублях.</li>
+        <li>Система мгновенных платежей — перевод по номеру телефона и названию банка, круглосуточно.</li>
+        <li>МСИ — межбанковская система идентификации: удостоверить личность без визита в банк.</li>
+        <li>Фишинг — поддельные сайты и ссылки, вишинг — звонки, скимминг — накладки на банкомат, дроп — человек, через карту которого выводят украденные деньги.</li>
+        <li>Никому не сообщать CVC, коды из SMS, пароли. При подозрительном списании — сразу заблокировать карточку и звонить в банк.</li>
+      </ul>
+      <h3>Страхование, налоги, инвестиции</h3>
+      <ul>
+        <li>Страхователь — клиент, страховщик — компания. Страховой взнос = страховая премия. Полис подтверждает договор.</li>
+        <li>Обязательно для водителя — страхование гражданской ответственности. КАСКО — добровольно. Лотереи и пари не страхуют.</li>
+        <li>Косвенные налоги — НДС и акцизы. Проценты по рублёвому вкладу на срок больше года налогом не облагаются.</li>
+        <li>Подарки и переводы от близких родственников подоходным налогом не облагаются. Многодетные не платят налог на жильё.</li>
+        <li>Акция — доля и право голоса. Облигация и долговой токен — долг с процентом. Брокер действует по поручению клиента, дилер — от своего имени и за свой счёт.</li>
+        <li>Диверсификация снижает риск. Пирамида обещает высокий «гарантированный» доход и платит за новых участников.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="panel" id="p-links" hidden>
+    <div class="card">
+      <h2 style="font:700 17px var(--f-display);margin:0">Официальные материалы Нацбанка</h2>
+      <p class="note">Задания районного и областного этапов в открытом доступе не публикуются. Задания тех же типов есть в архиве заключительного этапа.</p>
+      <ul class="links">
+        <li><a href="https://fingramota.by/ru/services/library/olimpiadas-tests" target="_blank" rel="noopener">Архив заданий заключительного этапа 2017–2025</a><span>Вопросы с ответами и пояснениями, файлы Word</span></li>
+        <li><a href="https://fingramota.by/ru/services/library/olimpiadas-tests/33" target="_blank" rel="noopener">Заключительный этап 2025</a><span>Самый свежий вариант: начните с него</span></li>
+        <li><a href="https://fingramota.by/ru/services/library/olimpiadas-tests/32" target="_blank" rel="noopener">Заключительный этап 2024</a></li>
+        <li><a href="https://fingramota.by/ru/services/library/documents/67" target="_blank" rel="noopener">Методические рекомендации 2026</a><span>Темы всех 10 модулей и примеры вопросов с разбором</span></li>
+        <li><a href="https://www.fingramota.by/ru/services/tests/1" target="_blank" rel="noopener">Тесты на портале fingramota.by</a><span>Короткие тесты по каждой теме</span></li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<script src="questions.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

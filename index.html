@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Финграм: тренажёры к олимпиаде</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: одна колонка, две карточки этапов одна под другой */
+:root {
+  --bg: #f3f6f4; --paper: #ffffff; --ink: #14251f; --muted: #5a6b64; --line: #d5ded9; --accent: #1f6b52; --gold: #9a6b12;
+  --f-display: "Unbounded", "Golos Text", system-ui, sans-serif;
+  --f-body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1714; --paper: #16221d; --ink: #e4ede8; --muted: #93a69d; --line: #2a3a33; --accent: #5fc39b; --gold: #e0b45a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f1714; --paper: #16221d; --ink: #e4ede8; --muted: #93a69d; --line: #2a3a33; --accent: #5fc39b; --gold: #e0b45a; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 16px/1.5 var(--f-body) }
+.wrap { max-width: 720px; margin: 0 auto; padding-inline: 16px; padding-block: 32px 56px; display: grid; gap: 20px }
+h1 { font: 700 clamp(24px, 5vw, 32px)/1.15 var(--f-display); margin: 0; text-wrap: balance }
+.lead { margin: 0; color: var(--muted); max-width: 62ch }
+.tag { font: 600 12px var(--f-body); letter-spacing: .04em; text-transform: uppercase; color: var(--gold) }
+a.card { display: grid; gap: 8px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 20px; color: var(--ink); text-decoration: none }
+a.card:hover { border-color: var(--accent) }
+a.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.card h2 { font: 600 20px var(--f-body); margin: 0; color: var(--accent) }
+.card p { margin: 0; color: var(--muted) }
+.meta { font: 500 13px var(--f-mono); color: var(--muted) }
+.note { font-size: 14px; color: var(--muted); margin: 0 }
+.note a { color: var(--accent) }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">Республиканская олимпиада по финансовой грамотности · 2026</span>
+  <h1>Тренажёры к олимпиаде по финграмотности</h1>
+  <p class="lead">Пробные варианты в формате олимпиады Нацбанка: 30 вопросов, один верный ответ из трёх, 60 минут, без калькулятора. Плюс задачи по темам и шпаргалки.</p>
+
+  <a class="card" href="rayon.html">
+    <span class="tag">II этап · 16 октября</span>
+    <h2>Районный этап</h2>
+    <p>Один пробный вариант, 38 задач по 10 темам, шпаргалка с формулами и ключевыми фактами.</p>
+    <span class="meta">по методичке НБРБ 2026</span>
+  </a>
+
+  <a class="card" href="oblast.html">
+    <span class="tag">III этап · 20 ноября</span>
+    <h2>Областной этап</h2>
+    <p>Два варианта уровня заключительных этапов: задачи в несколько действий, налоги, курсы валют, Нацбанк и законодательство.</p>
+    <span class="meta">по разбору финалов 2021–2025</span>
+  </a>
+
+  <p class="note">Вопросы составлены для тренировки и не являются официальными заданиями олимпиады. Официальные материалы: <a href="https://fingramota.by/ru/services/library/olimpiadas-tests">архив заданий на fingramota.by</a>.</p>
+</div>
+</body>
+</html>
